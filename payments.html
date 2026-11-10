@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f2f4f5">
+  <title>Способы оплаты и сценарии покупки — Звездач</title>
+  <link rel="preload" href="./assets/fonts/RFDewiCondensed-Black.otf" as="font" type="font/otf" crossorigin>
+  <link rel="preload" href="./assets/fonts/Inter-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="./assets/fonts/JetBrainsMono-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="./stars-section.css">
+  <link rel="stylesheet" href="./payments.css">
+</head>
+<body>
+<main>
+  <section class="payments" aria-labelledby="payments-title" data-figma-node="1105:74118">
+    <img class="payments__clouds" src="./assets/payments/clouds.svg" width="1807.38" height="332" alt="" aria-hidden="true">
+    <div class="payments__intro">
+      <h1 id="payments-title" class="payments__title">Способы оплаты <br>и сценарии покупки</h1>
+      <div class="payments__controls" aria-label="Переключение способов оплаты">
+        <button class="payments__arrow payments__arrow--previous" type="button" aria-label="Предыдущая карточка" aria-controls="payment-cards" disabled><span aria-hidden="true"></span></button>
+        <button class="payments__arrow payments__arrow--next" type="button" aria-label="Следующая карточка" aria-controls="payment-cards"><span aria-hidden="true"></span></button>
+      </div>
+    </div>
+    <div class="payments__viewport" id="payment-cards" role="region" aria-roledescription="карусель" aria-label="Способы оплаты и сценарии покупки" tabindex="0">
+      <article class="payment-card" style="--card-x:0px" aria-label="1 из 6: Оплата через СБП">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-sbp"><img src="./assets/payments/sbp@2x.png" width="252.853" height="262.374" alt="" draggable="false"></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-stars/sbp" target="_blank" rel="noopener">Оплата через СБП</a></h2><p class="payment-card__description">Оплата по номеру телефона из приложения вашего банка.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-stars/sbp" target="_blank" rel="noopener" aria-label="Перейти: Оплата через СБП">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+      <article class="payment-card" style="--card-x:400px" aria-label="2 из 6: Оплата криптой">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-crypto"><img src="./assets/payments/crypto@2x.png" width="234.805" height="209.36" alt="" draggable="false"></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-stars/crypto" target="_blank" rel="noopener">Оплата криптой</a></h2><p class="payment-card__description">Монеты, сети и порядок оплаты звёзд за крипту.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-stars/crypto" target="_blank" rel="noopener" aria-label="Перейти: Оплата криптой">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+      <article class="payment-card" style="--card-x:800px" aria-label="3 из 6: Оплата картой">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-card"><img src="./assets/payments/card@2x.png" width="302.864" height="260.981" alt="" draggable="false"></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-stars/card" target="_blank" rel="noopener">Оплата  картой</a></h2><p class="payment-card__description">Как оплатить звёзды картой <br class="payment-card__desktop-break">и что нужно знать о возврате.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-stars/card" target="_blank" rel="noopener" aria-label="Перейти: Оплата картой">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+      <article class="payment-card payment-card--wide-copy" style="--card-x:1200px" aria-label="4 из 6: Подарить звёзды другу">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-star"><div class="art-star__inner"><img src="./assets/payments/gift@2x.png" width="232.76" height="232.763" alt="" draggable="false"></div></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-stars/telegram-gift" target="_blank" rel="noopener">Подарить звёзды другу</a></h2><p class="payment-card__description">Отправка по username, в том числе нескольким людям сразу.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-stars/telegram-gift" target="_blank" rel="noopener" aria-label="Перейти: Подарить звёзды другу">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+      <article class="payment-card payment-card--wide-copy" style="--card-x:1600px" aria-label="5 из 6: Курс звёзд к рублю">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-star"><div class="art-star__inner"><img src="./assets/payments/rate@2x.png" width="232.76" height="232.763" alt="" draggable="false"></div></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-stars/rate" target="_blank" rel="noopener">Курс звёзд к рублю</a></h2><p class="payment-card__description">Калькулятор: сколько звёзд <br class="payment-card__desktop-break">за вашу сумму и наоборот.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-stars/rate" target="_blank" rel="noopener" aria-label="Перейти: Курс звёзд к рублю">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+      <article class="payment-card payment-card--wide-copy" style="--card-x:2000px" aria-label="6 из 6: Telegram Premium">
+        <div class="payment-card__art" aria-hidden="true"><div class="art-premium"><div class="art-premium__inner"><div class="art-premium__group"><img src="./assets/payments/premium@2x.png" width="238.295" height="238.352" alt="" draggable="false"></div></div></div></div>
+        <div class="payment-card__copy"><h2 class="payment-card__title"><a href="https://zvezdach.com/telegram-premium" target="_blank" rel="noopener">Telegram Premium</a></h2><p class="payment-card__description">Подписка для себя или в подарок на 1, 3, 6 или 12 месяцев.</p></div>
+        <a class="stars-card__button payment-card__action" href="https://zvezdach.com/telegram-premium" target="_blank" rel="noopener" aria-label="Перейти: Telegram Premium">Перейти<img src="./assets/payments/button-arrow.svg" width="9.54" height="10.62" alt="" aria-hidden="true"></a>
+      </article>
+    </div>
+    <p class="payments__status" role="status" aria-live="polite" aria-atomic="true"></p>
+  </section>
+</main>
+<script type="module" src="./payments.js"></script>
+</body>
+</html>

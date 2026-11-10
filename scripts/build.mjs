@@ -6,7 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const output = resolve(root, 'dist');
 await rm(output, {recursive:true, force:true});
 await mkdir(output, {recursive:true});
-for (const name of ['stars-section.css', 'stars-section.js', 'zvezdach-coin.js', 'assets']) {
+for (const name of ['stars-section.css', 'stars-section.js', 'zvezdach-coin.js', 'payments.html', 'payments.css', 'payments.js', 'assets']) {
   await cp(resolve(root, name), resolve(output, name), {recursive:true});
 }
 const threeFiles = [
