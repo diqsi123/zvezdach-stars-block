@@ -18,5 +18,5 @@
 .stars-card__button{display:inline-flex;flex:none;height:56px;align-items:center;justify-content:center;gap:8px;padding:0 24px;border:0;border-radius:var(--radius-pill);background:var(--text-on-brand);color:var(--stars-action);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;line-height:16px;letter-spacing:-.14px;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color 160ms,transform 160ms}
 .stars-card__button:hover{background:#fff}.stars-card__button:active{transform:scale(.98)}.stars-card__button:focus-visible{outline:2px solid #fff;outline-offset:5px}
 @media(max-width:640px){.stars-section{padding:24px 16px;min-height:0}.stars-card{min-height:min(670px,calc(100svh - 48px));height:auto;padding:clamp(40px,7.58svh,64px) 0;border-radius:40px}.stars-card__title{font-size:36px;line-height:37.8px;letter-spacing:-1.44px}.stars-card__description{width:100%}.stars-card__content{max-width:calc(100% - 40px)}}
-@media(max-width:360px){.stars-card__title{font-size:32px;line-height:33.6px;letter-spacing:-1.28px}}
+@media(max-width:360px){.stars-card__title{font-size:clamp(28px,9.375vw,32px);line-height:1.05;letter-spacing:-.04em}}
 @media(prefers-reduced-motion:reduce){.stars-card__button{transition:none}}
