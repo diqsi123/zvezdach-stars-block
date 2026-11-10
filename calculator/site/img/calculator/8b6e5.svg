@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="42.3805" height="40.039" viewBox="0 0 42.3805 40.039" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Star Shine" filter="url(#filter0_d_0_102)">
+<path d="M4.99512 1.87317L37.3854 31.9219C37.3854 31.9219 27.6293 31.9219 15.5317 26.8488C7.66009 23.5478 4.99512 1.87317 4.99512 1.87317Z" fill="url(#paint0_linear_0_102)"/>
+</g>
+<defs>
+<filter id="filter0_d_0_102" x="9.53674e-07" y="0" width="42.3805" height="40.039" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3.12195"/>
+<feGaussianBlur stdDeviation="2.49756"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_102"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_102" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_102" x1="5.38537" y1="1.87317" x2="24.1171" y2="37.3854" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="0.3125" stop-color="#737373"/>
+<stop offset="1" stop-color="#F8F8F8"/>
+</linearGradient>
+</defs>
+</svg>

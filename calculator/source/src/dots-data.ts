@@ -1,0 +1,37 @@
+// Generated from Figma "dots" layer (node 445:431) — 56x56 grid, exact per-dot opacity.
+// legend: 0 = no dot, a = 0.13, b = 0.14, c = 0.15, d = 0.20
+export const DOTS_COLS = 56;
+export const DOTS_ROWS = 56;
+export const DOTS_STEP = 36.12;
+export const DOTS_R = 1.204;
+export const DOTS_ORIGIN = 1.204;
+export const DOTS_ALPHA: Record<string, number> = { '0': 0, a: 0.13, b: 0.14, c: 0.15, d: 0.2 };
+export const DOTS_GRID =
+  'addaacaabdaddaadcacbaccbbdcaabbdcacdcacddbbccaccdadabcabbacacddbddcdaadbaddaaaacddaaccbdacdbbabdbcadaacdbacbbdab' +
+  'cbdaacbcbaccacaddbacaaaababacacdccbccadddaaacbcbabadbaccdbaadbbdabbcabaaacadcbbaaccdddadabdaacddbdaabcdacadddadb' +
+  'dbababccbcdcacccdcddacacabbdbbbcddaaaabaabcbdbcbaabcadcaacbcacbadbbadabaddccbdddcbcdaaddbcbaddbbbdbadcacaaadaccc' +
+  'dcabbaaddddacaacbbdbcbbdbdcdbabcbaddbaabbbddddbacbaabccabccbbcabcacacdacbcdcbcccbadccdbbadccdacabbcdcddadbbddccc' +
+  'dacaadbcdaaddccaacaabdabadcabaabbacbbdcbbdbacbbddcbcbbaddbbdcadadcbdbbdcadcdabcbabbabdbcbdcbaaddacbddcdbddadbcdb' +
+  'adcdbabbbcdcdbbcbbdbbbbacacacdbddccbddccadddadbabdbbcdbcdcbdabaabbaacaccbadccdabbaabbdddbcdcbcdbabcddbbcbcdcccdc' +
+  'aadadcdadbcdbacdbccaaacdbbdccabdabcbcbaaaacaccdcbdcbaddcbbdbbabbdd00000000000000dcbaabbbcddaacacbbcdaaaaaccbacbc' +
+  'aaadccbabd00000000000000dbdccbaadbaadcaacaaccbdddbcbdcdabddaacbada00000000000000ddababbcdadbcccabbccbacdabcbdcdc' +
+  'ddccaaccca00000000000000dcbcbccabadbccbcacdaadbdbabccdbcdbbdadcccc00000000000000dd00cdabaadaccadbadcddaadcbacaad' +
+  'acbddddadc00000000000000a0000addccdddacbbdddabdbcbaccbaaabcbdbcbbd00000000000000000000ddbccbabdccacddcbadccaadcc' +
+  'bcdbababad00000000000000000000bbcbbcddacccacadccbdbdbcacbbabbcabda00000000000000000000bbbbdddcdbdbcaacacdacbbbdc' +
+  'adcbbbbacb00000000000000000000aaaccdcbcccdcbbdaaaaaddbacacaacdbcbadbb00000000000000000daabaaaacccaacdddbdabbbbca' +
+  'cdadadadadbcc00000000000000000accaabcdcbcbacbdbcddbabcabbbccbbcdcbadadbabccdccadcaacdbbcbcdcbabcadaadbcbcacacbbb' +
+  'adcccbbbcaabbdddcddcddcabbbdddccadcdcbcbabcddbaddcabdaddaadaaacaddbadbababbadaddbbddcaaadcaadaababccddabdbdcddad' +
+  'bbbaccccdbbbdbaabcdcabbdadadadaacddccadbdccaddbbcbddbbccbdbdcbcdbcacbddcadadadccdcaaccacabdbdabcacdbbbaacbbdbdcd' +
+  'dacbaaddabdccdadbddabbdcbcdccbabdcaaaaacbadcbaacdddcddcbddcccabaaddcccadcabbbabcddbcccccddcdddaccdddcadcaabdacbc' +
+  'adbcaccbbcaaadcdbabbadcccccaabcabdbdbcdcacdbdbadaacbaadbccbddcbbdaaabcdcbcaacadbabcabcababbcbbdcbbabbbabbdaabcdc' +
+  'bcabbccacabbddabcaccdbdcbbdacbbdabbcbccbbccdbaccaccacbdcaabdbacadcdbddbdaddbacdabcbddbacdcbbccdabaddadbcdcbadcca' +
+  'ddaddadbddadcdaddcbccbacabaabdbcbdddabcdcddddbdbcbacbbdaaacdcdbabadbbabaaadbcccbbdddabdcdcaabdccbbbababbcdaddcbc' +
+  'cddbdadbbbdcaacacbddadcaabdbcbcabbcadcabcbbdbddcdcadcddcdbbdbabddbdbadbccdcdbcbcacbbcaaaddadaacddbccddaaadadbdda' +
+  'daadbcaaadacaabcbaababbcdddcadbdcababcbbbbccbaaabbbdbdcaaadbababcacdaaccdcbbccbbbbbdaccadcdacddcacaacbcbbcdddaba' +
+  'acaadbddbbacbaaaacadabcdabcdbcaabadbcabdacdbaabbcbdbdbbaabaccadbcbdacaadacaaaaabdadaabacdbdabbcaacdbabdbbbbabcbd' +
+  'dddaaaacbdcaaabcadddcbdaaaaacacbddbbddcbcbcbaccabaddbdcccbbacbcaaacdbacaaaabcdbbdbadacdccaabaaabdbccdaccdadabcbc' +
+  'cbdcacabbbaaacbdcdacbcaabcdddbaddadcadcabccdcddabbddcbdbcabcabdddbcdbcdbbadcdaabacaacbbaaddacaadadbcacbbbdaabcca' +
+  'cccbddbadcdcacbbaccbccabdbaaccddbbdcabbbccabdadcdddaaadccabbaccdbabaadabcdbdaaabdbbadcbdccdddcbadbabbbadbcbaaccb' +
+  'bbdadcccaddacdbdcdbadccacabbcabdddcbaacddbccaacaaccbdacbbaccccbadacabcccbabcbdcabbcddacddcaddcbdaddacdcaacabaaad' +
+  'bcaaadcacbccbadbaaaaadaddaacbcbcdbbbbadccabbbadcaaadbdbddccdcabbabbdcbbbbaaaccacacadabcadcbbbcaaddcbadcbdcbbcadb' +
+  'abaacbdbdbcacdbacbacdbabaacdbabbbaadcabbdcaddadabdbdbccbacdccadcbbadcdbbcbaaaabcdcababdbbdabdbacbddaababccdcdadb';

@@ -1,0 +1,27 @@
+{
+  "name": "zvezda-landing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:v1 && npm run build:v2",
+    "preview": "vite preview",
+    "build:v1": "tsc -b && VITE_VARIANT=1 vite build --outDir dist-v1 && node scripts/postbuild.mjs dist-v1",
+    "build:v2": "tsc -b && VITE_VARIANT=2 vite build --outDir dist-v2 && node scripts/postbuild.mjs dist-v2",
+    "deploy": "npm run build && rsync -a --delete dist-v1/ ../site-v1/ && rsync -a --delete dist-v2/ ../site-v2/"
+  },
+  "dependencies": {
+    "@number-flow/react": "0.6.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.2.0",
+    "@webgpu/types": "^0.1.74",
+    "typescript": "5.9.3",
+    "vite": "7.3.6"
+  }
+}

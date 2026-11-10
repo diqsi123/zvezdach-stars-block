@@ -9,6 +9,7 @@ await mkdir(output, {recursive:true});
 for (const name of ['stars-section.css', 'stars-section.js', 'zvezdach-coin.js', 'payments.html', 'payments.css', 'payments.js', 'assets']) {
   await cp(resolve(root, name), resolve(output, name), {recursive:true});
 }
+await cp(resolve(root, 'calculator/site'), resolve(output, 'calculator'), {recursive:true});
 const threeFiles = [
   'build/three.module.js',
   'examples/jsm/loaders/SVGLoader.js',
@@ -24,3 +25,4 @@ for (const name of threeFiles) {
 const html = await readFile(resolve(root, 'index.html'), 'utf8');
 await writeFile(resolve(output, 'index.html'), html.replaceAll('./node_modules/three/', './vendor/three/'));
 console.log('Static block built in dist/');
+

@@ -1,0 +1,2574 @@
+/* =============================================================================
+   Zvezda x Layout — Concept (Figma node 486:3683), вёрстка 1:1.
+   Размеры взяты из макета как есть. Все интерактивные состояния добавлены
+   сверху и не меняют покоящийся вид: только цвет, прозрачность, бордер.
+   ========================================================================== */
+
+:root {
+  --ink: #0d0128;
+  --ink-56: rgba(13, 1, 40, 0.56);
+  --surface: #f2f4f5;
+  --accent: #1db1ee;
+  --accent-hi: #35bcf1;
+  --accent-lo: #17a4dd;
+  --danger: #e0435c;
+  --ok: #17b26a;
+
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* RF Dewi Condensed Black — шрифт из макета (коммерческий). Если он стоит
+     в системе, подхватится; иначе ближайший бесплатный аналог. */
+  --display: 'RF Dewi Condensed', 'RF Dewi', 'Roboto Condensed', 'Arial Narrow', sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pill: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--surface);
+  font-family: var(--sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+input { font: inherit; color: inherit; border: 0; background: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* у полей фокус показывает сама строка — второй обводки быть не должно */
+.input:focus-visible { outline: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- страница */
+
+/* Первый экран. В макете 964:2533 следующая секция начинается на y=878,
+   поэтому высота героя фиксированная — иначе поедут все отступы ниже. */
+.page {
+  position: relative;
+  height: 878px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* запасной фон, если WebGL недоступен */
+.no-webgl .page::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 420px;
+  background:
+    radial-gradient(1460px 570px at 53% -215px,
+      rgba(20, 180, 246, 0.92) 0%, rgba(20, 180, 246, 0.5) 55%, rgba(242, 244, 245, 0) 100%),
+    linear-gradient(41deg, rgba(5, 162, 235, 0.5) 20%, rgba(25, 194, 255, 0) 62%);
+}
+
+.topbar, .tabs, .card { position: absolute; z-index: 1; }
+
+/* Выступ карточки за стикером — Union из маски фона (962:1934): x=645, y=91,
+   144×77 при ширине кадра 1440. Центр выступа в макете 717.5 — на 2.5px левее
+   медальона, это не ошибка, проверено по эталонному рендеру построчно. */
+.card-notch {
+  position: absolute;
+  left: calc(50% - 75px);
+  top: 91px;
+  width: 144px;
+  height: 77px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------- шапка */
+
+.topbar {
+  top: 12px; /* макет 962:1938 */
+  left: 0;
+  width: 100%;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: filter 0.4s var(--ease);
+}
+
+.logo:hover { filter: brightness(1.14); }
+
+/* --- центральная навигация --- */
+
+.nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px; /* 962:1943 — size/control-sm */
+  border-radius: 138px;
+}
+
+.nav-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 18px; /* space/xl */
+  border-radius: 999px; /* radius/pill */
+  background: rgba(255, 255, 255, 0.16);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  transition: background-color 0.32s var(--ease);
+}
+
+.nav-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0);
+  transition: border-color 0.32s var(--ease);
+  pointer-events: none;
+}
+
+.nav-pill:hover { background: rgba(255, 255, 255, 0.26); }
+.nav-pill:hover::after { border-color: rgba(255, 255, 255, 0.34); }
+.nav-pill:active { background: rgba(255, 255, 255, 0.2); }
+
+/* --- правая группа --- */
+
+.topbar-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.lang { position: relative; }
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px 0 12px; /* 962:1941: pl space/sm, pr space/lg */
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.32); /* border/subtle */
+  overflow: hidden;
+  transition: background-color 0.32s var(--ease), border-color 0.32s var(--ease);
+}
+
+.lang-btn:hover { border-color: rgba(255, 255, 255, 0.52); }
+.lang-btn.is-open {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.58);
+}
+
+.lang-main { display: flex; align-items: center; gap: 8px; }
+/* Глобус и «RU» расходятся на 0.46px — меньше половины пикселя. Двигать нечего:
+   растеризатор округляет сдвиг до целого, и любая правка делает только хуже
+   (проверено: 0.46 -> 0.54 при сдвиге текста, -> 0.55 при сдвиге иконки). */
+.lang-globe { display: flex; align-items: center; justify-content: center; }
+.lang-globe img { width: 16px; height: 16px; }
+
+.lang-code {
+  width: 15px; /* размер текстового слоя в макете */
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* Шеврона в макете 962:1941 больше нет — переключатель это глобус + код языка.
+   Выпадающий список остался, открывается по клику на всю пилюлю. */
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 92px;
+  padding: 4px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(6, 60, 96, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transform-origin: 100% 0;
+  pointer-events: none;
+  transition: opacity 0.22s var(--ease), transform 0.28s var(--ease-out);
+}
+
+.lang-menu.is-open { opacity: 1; transform: none; pointer-events: auto; }
+
+.lang-option {
+  padding: 9px 12px;
+  border-radius: 12px;
+  text-align: left;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--ink-56);
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease);
+}
+
+.lang-option:hover { background: var(--surface); color: var(--ink); }
+.lang-option.is-active { color: var(--ink); background: var(--surface); }
+
+.account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #f7f7f7; /* surface/secondary */
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background-color 0.32s var(--ease);
+}
+
+.account:hover { background: #fff; }
+.account:active { background: #ececec; }
+
+/* ------------------------------------------------------- боковые вкладки */
+
+.tabs {
+  top: 126px; /* макет 962:1992 */
+  left: calc(50% - 355px); /* макет: x=365 при ширине 1440 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.tab {
+  position: relative;
+  width: 112px;
+  height: 72px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-radius: 21.18px;
+  opacity: 0.32;
+  transition: opacity 0.32s var(--ease), background-color 0.32s var(--ease);
+}
+
+.tab:hover { opacity: 0.52; }
+
+.tab.is-active {
+  opacity: 1;
+  background: #fff;
+  border-radius: 16px;
+  filter: drop-shadow(0 2px 4px rgba(13, 1, 40, 0.02));
+  cursor: default;
+}
+
+.tab-icon { width: 16px; height: 16px; display: block; }
+.tab-icon img { width: 16px; height: 16px; }
+
+.tab-label {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.7;
+  white-space: nowrap;
+  transition: opacity 0.32s var(--ease);
+}
+
+.tab.is-active .tab-label { opacity: 1; }
+
+/* --------------------------------------------------------------- карточка */
+
+.card {
+  top: 126px; /* макет 962:1949 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 454px;
+  padding: 56px 24px 40px; /* pt 56 (под медальон), pb 40 */
+  border-radius: 20px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* --- заголовок --- */
+
+.card-head {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-head-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.card-title {
+  /* отрицательный трекинг браузер добавляет и после последней буквы, из-за чего
+     бокс уезжает вправо относительно набора — компенсируем, как центрит Figma */
+  margin: 0 3px 0 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 38px; /* 36 × 1.05, округлено как в макете */
+  letter-spacing: -1.44px;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* компенсация метрик подменного шрифта — см. main.tsx */
+.no-dewi .card-title {
+  letter-spacing: -1.69px;
+  transform: scaleY(1.25);
+  transform-origin: 50% 0.5px;
+}
+
+.card-sub {
+  margin: 0;
+  width: 236px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  text-align: center;
+  color: var(--ink);
+}
+
+.hint {
+  position: absolute;
+  left: 340px; /* макет 962:1955 — внутри головы шириной 406 */
+  top: 10px;
+  width: 15.999px;
+  height: 18.03px;
+  z-index: 4;
+  opacity: 1;
+  transition: opacity 0.3s var(--ease);
+}
+
+.hint img { width: 15.999px; height: 18.03px; }
+.hint:hover { opacity: 0.68; }
+
+.hint-bubble {
+  position: absolute;
+  right: -2px;
+  bottom: calc(100% + 10px);
+  width: 210px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.11px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.22s var(--ease), transform 0.28s var(--ease-out);
+  z-index: 3;
+}
+
+.hint-bubble::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 100%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  background: var(--ink);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+.hint-bubble.is-open { opacity: 1; transform: none; }
+
+/* --- форма --- */
+
+/* 486:3719 — стек с шагом 24: группа юзернейма → блок оплаты */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* 486:3730 — сумма и способы оплаты с шагом 16 */
+.pay-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.field-group {
+  width: 100%;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.48);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s var(--ease);
+}
+
+.field-group.is-multi { background: rgba(255, 255, 255, 0.72); }
+
+/* Высота строки фиксирована: содержимое (текст 18px или чип 28px) центрируется
+   и не меняет высоту — иначе при подтверждении получателя вся форма съезжает. */
+.input-row,
+.amount-row {
+  position: relative;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  cursor: text;
+  transition: box-shadow 0.25s var(--ease);
+}
+
+.input-row { gap: 12px; overflow: hidden; }
+.amount-row { justify-content: space-between; overflow: hidden; }
+
+.input-row:focus-within,
+.amount-row:focus-within {
+  box-shadow: 0 0 0 1.5px rgba(29, 177, 238, 0.34);
+}
+
+.input-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.input-icon img { width: 16px; height: 16px; }
+
+/* Оптическое выравнивание текста с иконкой.
+   Геометрически бокс текста и так центрирован, но у Inter полоса строчных букв
+   лежит ниже середины бокса (выносные элементы вроде «р» тянут массу вниз),
+   поэтому текст читается смещённым. Поднимаем на 1px — крутится одним местом. */
+:root { --text-optical: -1px; }
+
+.input,
+.user-chip-name {
+  position: relative;
+  top: var(--text-optical);
+}
+
+/* В строке суммы набор цифровой. У цифр нет выносных элементов, они и без
+   сдвига стоят по центру, а дробный сдвиг дал бы подпиксельное размытие —
+   поэтому здесь ноль. */
+.amount-row .input,
+.amount-total {
+  position: relative;
+  top: 0;
+}
+
+.input {
+  flex: 1 0 0;
+  min-width: 0;
+  width: 100%;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--ink);
+}
+
+.input::placeholder { color: var(--ink-56); transition: opacity 0.22s var(--ease); }
+.input:focus::placeholder { opacity: 0.55; }
+
+.amount-left { display: flex; align-items: center; gap: 12px; flex: 1 0 0; min-width: 0; }
+
+.amount-total {
+  flex-shrink: 0;
+  width: 129px;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--ink-56);
+  transition: color 0.25s var(--ease);
+}
+
+.amount-row:focus-within .amount-total { color: var(--ink); }
+
+/* --- подтверждение получателя --- */
+
+.spinner {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(13, 1, 40, 0.14);
+  border-top-color: rgba(13, 1, 40, 0.45);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Подтверждённый получатель — чип на месте поля (макет 511:470):
+   аватар 20px + юзернейм, высота 28, скругление полное. */
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 4px 10px 4px 4px; /* правый отступ выставлен по ширине чипа в макете */
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: background-color 0.24s var(--ease);
+  animation: chip-in 0.28s var(--ease-out) both;
+}
+
+/* весь чип — кнопка «изменить получателя», отдельного крестика в макете нет */
+.user-chip:hover { background: #e8ebed; }
+
+@keyframes chip-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+.user-chip-ava {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-chip-ava--stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--hue, 210) 60% 88%);
+  color: hsl(var(--hue, 210) 50% 32%);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.2px;
+}
+
+.user-chip-name {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--ink);
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* «не найден»: раскрывается только при неудаче, в покое высоты не занимает */
+.lookup-miss {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease);
+}
+
+.lookup-miss.is-open { grid-template-rows: 1fr; }
+
+.lookup-miss > span {
+  overflow: hidden;
+  min-height: 0;
+  display: block;
+  padding: 0 16px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: var(--danger);
+  opacity: 0;
+  transition: opacity 0.24s var(--ease), padding 0.3s var(--ease);
+}
+
+.lookup-miss.is-open > span { opacity: 1; padding: 10px 16px 0; }
+
+/* --- мультиотправка --- */
+
+.multi-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 0 0 16px 16px;
+}
+
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 32px;
+  height: 18px;
+  border-radius: 9px;
+  background: #d5dade;
+  transition: background-color 0.3s var(--ease);
+}
+
+.switch:hover { background: #c6ccd2; }
+.switch.is-on, .switch.is-on:hover { background: var(--accent); }
+
+.switch-knob {
+  position: absolute;
+  left: 1.8px;
+  top: 1.8px;
+  width: 14.4px;
+  height: 14.4px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.36s cubic-bezier(0.34, 1.42, 0.5, 1);
+}
+
+.switch.is-on .switch-knob { transform: translateX(14px); }
+
+.multi-text { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.multi-title {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.multi-desc {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: var(--ink-56);
+}
+
+/* --- способы оплаты: сегмент-контрол (486:3739) --- */
+
+.segments {
+  position: relative;
+  width: 100%;
+  padding: 3px;
+  border-radius: 56px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* «пилюля» выбранного способа — она же и есть подложка #f2f4f5 из макета */
+.segments-pill {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  bottom: 3px;
+  width: calc((100% - 6px) / 3);
+  border-radius: 192px;
+  background: var(--surface);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform 0.42s var(--ease-pill);
+  pointer-events: none;
+}
+
+.segment {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 192px;
+  white-space: nowrap;
+}
+
+.segment.is-active { cursor: default; }
+
+.seg-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-icon--card { width: 15.667px; height: 15.667px; }
+.seg-icon img { width: 100%; height: 100%; }
+
+/* три монеты с нахлёстом 6px, как в макете (486:3750) */
+.seg-stack { flex-shrink: 0; display: flex; align-items: center; isolation: isolate; }
+.seg-stack img { width: 16px; height: 16px; }
+.seg-stack-a { margin-right: -6px; z-index: 3; }
+.seg-stack-b { margin-right: -6px; z-index: 2; }
+.seg-stack-c { z-index: 1; }
+
+/* микро-анимации иконок: короткие, с лёгким запаздыванием */
+.seg-icon img, .seg-stack img {
+  transition: transform 0.42s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.segment:hover .seg-icon img { transform: scale(1.08); }
+.segment:hover .seg-icon--card img { transform: scale(1.06) rotate(-5deg); }
+.segment:hover .seg-stack-a { transform: translateX(-2px) scale(1.06); }
+.segment:hover .seg-stack-b { transform: scale(1.06); transition-delay: 40ms; }
+.segment:hover .seg-stack-c { transform: translateX(2px) scale(1.06); transition-delay: 80ms; }
+
+/* в макете подписи всех сегментов одинаково насыщенные — приглушать нельзя */
+.seg-label {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--ink);
+}
+
+/* Ховер невыбранного сегмента: заметно светлее выбранной пилюли (#f2f4f5),
+   чтобы состояния не сливались друг с другом и с белым фоном. */
+.segment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #f9fafb;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.28s var(--ease);
+  pointer-events: none;
+}
+
+/* Иконки и подпись должны лежать выше подложки ховера: подложка абсолютная,
+   а они в обычном потоке — без этого она накрывала текст и он выцветал. */
+.segment > * {
+  position: relative;
+  z-index: 1;
+}
+
+.segment:hover::before { opacity: 1; }
+.segment.is-active::before { opacity: 0; }
+
+/* --- кнопка и подпись --- */
+
+.cta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.pay-btn {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  border-radius: 49px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 15px;
+  overflow: hidden;
+  transition: background-color 0.3s var(--ease);
+}
+
+.pay-btn:hover { background: var(--accent-hi); }
+.pay-btn:active { background: var(--accent-lo); }
+
+.pay-btn-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: normal;
+  letter-spacing: -0.14px;
+  text-transform: uppercase;
+  color: #f7f7f7;
+  white-space: nowrap;
+}
+
+/* Полоса, пробегающая по кнопке: узкая наклонная подсветка проходит слева
+   направо примерно за 2.4с, потом пауза за пределами кнопки — стык не виден,
+   потому что в начале и в конце полоса вне кадра. */
+.pay-btn-wave {
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -340px;
+  width: 300px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.055) 26%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.055) 74%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  filter: blur(18px);
+  animation: btn-sweep 7.5s ease-in-out infinite;
+}
+
+@keyframes btn-sweep {
+  0%, 5%    { transform: translateX(0); }
+  62%, 100% { transform: translateX(1100px); }
+}
+
+.note {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: var(--ink-56);
+  white-space: nowrap;
+  transition: color 0.25s var(--ease);
+}
+
+.note-dot { width: 4px; height: 4px; flex-shrink: 0; }
+
+.note.is-error {
+  color: var(--danger);
+  animation: note-in 0.32s var(--ease);
+}
+
+@keyframes note-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- стикер (486:3771): по центру верхнего края карточки --- */
+
+.badge {
+  position: absolute;
+  left: 50%;
+  top: -28px;
+  width: 64px;
+  height: 64px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Маска срезает правый верхний угол кружка — за счёт неё и получается
+   отклеенный уголок; блики рисуются сверху и закрывают срез. */
+.badge-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 64px;
+  -webkit-mask-image: url('/img/star-mask.svg');
+  mask-image: url('/img/star-mask.svg');
+  -webkit-mask-size: 64px 64px;
+  mask-size: 64px 64px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.badge-fill img { width: 64px; height: 64px; }
+
+.badge-hl1 {
+  position: absolute;
+  left: 26.618px;
+  top: -1.875px;
+  width: 42.3805px;
+  height: 40.039px;
+  max-width: none;
+}
+
+.badge-hl2 {
+  position: absolute;
+  left: 31.61px;
+  top: 0;
+  width: 32.3902px;
+  height: 30.0488px;
+  max-width: none;
+}
+
+/* --------------------------------------------------------------- скелетон */
+
+.sk {
+  display: block;
+  border-radius: 999px;
+  background: linear-gradient(
+    100deg,
+    rgba(13, 1, 40, 0.045) 22%,
+    rgba(13, 1, 40, 0.075) 44%,
+    rgba(13, 1, 40, 0.045) 66%
+  );
+  background-size: 300% 100%;
+  animation: sk 1.9s ease-in-out infinite;
+}
+
+@keyframes sk {
+  from { background-position: 140% 0; }
+  to   { background-position: -40% 0; }
+}
+
+/* карточка проявляется мягко, чтобы подмена скелетона не читалась как щелчок */
+.card > * { animation: card-in 0.32s var(--ease) both; }
+.card.is-loading > * { animation: none; }
+
+@keyframes card-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 26 + 2×6 = 38 — ровно высота бокса заголовка */
+.sk-title { width: 210px; height: 26px; margin: 6px 0; }
+/* 2×12 + 12 = 36 — высота двухстрочного подзаголовка */
+.sk-sub { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.sk-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+.sk-switch { width: 32px; height: 18px; border-radius: 9px; flex-shrink: 0; }
+.sk-btn { width: 100%; height: 56px; border-radius: 49px; }
+
+/* в скелетоне строки-заглушки не должны наследовать раскладку полей */
+.card.is-loading .input-row,
+.card.is-loading .amount-row { cursor: default; }
+.card.is-loading .segments { justify-content: space-between; }
+.card.is-loading .segment { gap: 8px; }
+
+/* ------------------------------------------------------------------ прочее */
+
+/* dev: ?still=<c> — замораживает всё для попиксельной сверки скриншотов */
+.is-still *,
+.is-still *::before,
+.is-still *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =============================================================================
+   Секция «Как проходит покупка» (1002:3403, 1440×1494)
+   ========================================================================== */
+
+.steps {
+  position: relative;
+  width: 100%;
+  height: 1494px; /* макет 1002:3403 */
+  background: var(--surface);
+  /* без overflow: hidden — иначе облака обрезаются по краю секции ровной
+     линией; по горизонтали страницу держит overflow-x у body */
+}
+
+/* Облака из макета (1002:3404): два слоя, нижний отражён по горизонтали. */
+/* Коробка облаков вылезает за секцию сверху и снизу — иначе края срезаются
+   ровной линией. Снизу вылет упирается в следующую секцию, а она непрозрачная
+   и рисуется поверх, так что прокрутку это не растягивает. Дети сдвинуты
+   на те же 220, на которые поднят верх коробки. */
+.steps-clouds {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -220px;
+  bottom: -420px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.steps-clouds img {
+  position: absolute;
+  left: calc(50% - 766px); /* макет: x=-46 при ширине 1440 */
+  width: 1589.72px;
+  max-width: none;
+  height: 952px;
+}
+
+.steps-clouds-t {
+  top: 80px; /* макет -140 + 220 сдвига коробки */
+  animation: cloud-drift-a 64s ease-in-out infinite;
+}
+.steps-clouds-b {
+  top: 1174px; /* макет 954 + 220 */
+  scale: -1 1;
+  animation: cloud-drift-b 82s ease-in-out infinite;
+}
+
+@keyframes cloud-drift-a {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 14px -6px; }
+}
+
+@keyframes cloud-drift-b {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: -12px 5px; }
+}
+
+.steps-title {
+  position: absolute;
+  left: 50%;
+  top: 59px;
+  transform: translate(-50%, -50%);
+  width: 392px;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: -2.24px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* компенсация метрик подменного шрифта — как у заголовка карточки */
+.no-dewi .steps-title { letter-spacing: -2.63px; transform: translate(-50%, -50%) scaleY(1.25); }
+
+/* --- вертикальная линия --- */
+
+.steps-line {
+  position: absolute;
+  left: calc(50% - 4px);
+  top: 182px;
+  width: 8px;
+  height: 1188px;
+}
+
+.steps-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #dfe4e8;
+  transition: background-color 0.45s var(--ease);
+}
+
+.steps-dot.is-on { background: var(--accent); }
+
+/* Неактивная часть в макете белая — на #f2f4f5 она читается едва-едва,
+   это задумка, а не потерянный цвет. */
+.steps-seg {
+  position: absolute;
+  left: 3.5px;
+  width: 1px;
+  background: #fff;
+}
+
+.steps-seg-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* --- спарклы вдоль линии --- */
+
+/* Искры следа: позиция, прозрачность и масштаб приходят из JS — эффект
+   привязан к ходу заливки, поэтому своих keyframes здесь нет. */
+.steps-spark {
+  position: absolute;
+  color: var(--accent);
+  pointer-events: none;
+  will-change: opacity, scale;
+}
+
+
+/* --- шаг --- */
+
+.steps-row {
+  position: absolute;
+  left: calc(50% - 374px); /* макет: x=346 при ширине 1440 */
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+/* Рамка иллюстрации из макета — 236×213, но сама картинка выходит за неё,
+   поэтому размер и сдвиг заданы отдельно на <img>, а пропорции не трогаем. */
+.steps-art {
+  position: relative;
+  display: block;
+  width: 236px;
+  height: 213px;
+  flex-shrink: 0;
+}
+
+.steps-art img {
+  position: absolute;
+  max-width: none;
+  /* только вертикальное покачивание: поворот на стикерах читался как дёрганье */
+  animation: art-float var(--float-t, 7s) ease-in-out var(--float-d, 0s) infinite;
+}
+
+@keyframes art-float {
+  0%, 100% { translate: 0 0;     scale: 1; }
+  50%      { translate: 0 -14px; scale: 1.025; }
+}
+
+/* Иллюстрация въезжает чуть заметнее остального блока */
+.steps-row .steps-art { scale: 0.94; opacity: 0; transition: scale 0.8s var(--ease-out) var(--d, 0ms), opacity 0.8s var(--ease-out) var(--d, 0ms); }
+.steps-row.is-in .steps-art { scale: 1; opacity: 1; }
+
+.steps-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 149px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 12px 14px;
+  border-radius: 192px;
+  background: #fff;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Пилюля синеет, когда заливка линии дошла до этого шага. Без теней. */
+.steps-badge {
+  transition: background-color 0.45s var(--ease), color 0.45s var(--ease);
+}
+
+.steps-badge.is-accent {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Иконка шага — маска, а не картинка: цвет берётся от состояния пилюли,
+   поэтому один файл работает и на белом, и на синем. */
+.steps-badge i {
+  width: 16px;
+  height: 14.572px;
+  flex-shrink: 0;
+  background: var(--ink);
+  opacity: 0.48; /* в макете иконка неактивного шага полупрозрачная */
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+  transition: background-color 0.45s var(--ease), opacity 0.45s var(--ease);
+}
+
+/* на голубой плашке — чистый белый, без полупрозрачности */
+.steps-badge.is-accent i { background: #fff; opacity: 1; }
+
+.steps-text { width: 318px; display: flex; flex-direction: column; gap: 16px; }
+
+/* заголовок и абзац приезжают чуть позже иллюстрации */
+.steps-row .steps-text h3,
+.steps-row .steps-text p,
+.steps-row .steps-badge {
+  opacity: 0;
+  translate: 0 12px;
+  transition: opacity 0.7s var(--ease-out), translate 0.7s var(--ease-out);
+}
+
+.steps-row.is-in .steps-badge   { opacity: 1; translate: none; transition-delay: 0.10s; }
+.steps-row.is-in .steps-text h3 { opacity: 1; translate: none; transition-delay: 0.16s; }
+.steps-row.is-in .steps-text p  { opacity: 1; translate: none; transition-delay: 0.24s; }
+
+.steps-text h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.05;
+  letter-spacing: -1.12px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.no-dewi .steps-text h3 { letter-spacing: -1.32px; }
+
+.steps-text p {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: rgba(13, 1, 40, 0.72);
+}
+
+/* =============================================================================
+   Появление по скроллу
+   ========================================================================== */
+
+/* Сдвиг делаем свойством translate, а не transform: у заголовка секции на
+   transform уже висит центрирование (и компенсация метрик шрифта), и любой
+   transform здесь просто затёр бы его. translate накладывается поверх. */
+.reveal {
+  opacity: 0;
+  translate: 0 18px;
+  transition:
+    opacity 0.75s var(--ease-out) var(--d, 0ms),
+    translate 0.75s var(--ease-out) var(--d, 0ms);
+}
+
+.reveal.is-in { opacity: 1; translate: none; }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; translate: none; transition: none; }
+  .steps-row .steps-art,
+  .steps-row .steps-text h3,
+  .steps-row .steps-text p,
+  .steps-row .steps-badge { opacity: 1; translate: none; scale: 1; transition: none; }
+  .steps-art img, .steps-clouds img { animation: none; }
+}
+
+/* =============================================================================
+   Секция «Почему выбирают Звездач» (1002:3656, плашка 1392×720, радиус 63)
+   ========================================================================== */
+
+/* В макете 964:2533 секция стоит на y=2528, предыдущая заканчивается на 2372 */
+/* Секция ужимается под окно: внутри у плашки своя система координат 1392,
+   поэтому вместо переверстки масштабируем её целиком. --fit приходит из JS
+   и держит поля по 24px на любой ширине; отрицательный margin-bottom убирает
+   пустоту, которая иначе осталась бы от несжатой высоты в потоке. */
+.why {
+  position: relative;
+  margin-top: 156px;
+  margin-bottom: calc((var(--fit, 1) - 1) * 720px);
+}
+
+.why-plate {
+  position: relative;
+  width: 1392px;
+  height: 720px;
+  /* margin:auto перестаёт центрировать, как только плашка шире контейнера
+     (при зуме браузера это ровно так), — поэтому центрируем через поле:
+     оно работает и при переполнении, лишнее срезает overflow-x у body. */
+  margin-left: calc(50% - 696px);
+  border-radius: 63px;
+  /* без overflow: hidden — во второй записке булавка по макету висит на 53px
+     выше кромки плашки, и клип срезал бы ей всю шляпку. Паттерн скругляется
+     сам, ему обрезка родителем не нужна. */
+  background: linear-gradient(180deg, #1db1ee 0%, #1dcfee 100%);
+  transform-origin: top center;
+  /* подгон под ширину окна × рост по скроллу */
+  scale: calc(var(--fit, 1) * var(--plate-scale, 1));
+  will-change: scale;
+}
+
+.why-pattern {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url('/img/why/pattern.png') top left / 40px 40px repeat;
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+.why-title {
+  position: absolute;
+  left: 696px;
+  top: 360.5px;
+  transform: translate(-50%, -50%);
+  width: 506px;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 52px;
+  line-height: 1.05;
+  letter-spacing: -2.08px;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Каждая строка заливается белым слева направо: доля приходит в --p.
+   Незалитая часть — те же 40% белого, что в макете. */
+.why-title-line {
+  display: block;
+  background-image: linear-gradient(90deg,
+    #fff 0, #fff var(--p, 0%), rgba(255, 255, 255, 0.4) var(--p, 0%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.no-dewi .why-title { letter-spacing: -2.44px; transform: translate(-50%, -50%) scaleY(1.25); }
+
+/* --- записка на булавке --- */
+
+/* Карточка — слой во весь размер плашки: координаты детей взяты из макета
+   как есть. Точка вращения — булавка, поэтому записка качается на ней. */
+.why-card {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--ox) var(--oy);
+  opacity: 0;
+  translate: 0 -16px;
+  rotate: -2.5deg;
+  transition:
+    opacity 0.7s var(--ease-out) var(--d, 0ms),
+    translate 0.85s var(--ease-out) var(--d, 0ms),
+    rotate 0.85s var(--ease-out) var(--d, 0ms);
+}
+
+.why-card.is-in {
+  opacity: 1;
+  translate: none;
+  rotate: 0deg;
+  /* качание начинается после того, как записка «повисла» */
+  animation: note-sway var(--sway-t, 8s) ease-in-out 1.4s infinite;
+}
+
+/* Булавка втыкается первой, записка подхватывается следом. */
+.why-pin {
+  opacity: 0;
+  translate: 0 -22px;
+  scale: 0.7;
+  transition:
+    opacity 0.28s var(--ease-out) var(--d, 0ms),
+    translate 0.42s cubic-bezier(0.3, 1.5, 0.5, 1) var(--d, 0ms),
+    scale 0.42s cubic-bezier(0.3, 1.5, 0.5, 1) var(--d, 0ms);
+}
+
+.why-card.is-in .why-pin { opacity: 1; translate: none; scale: 1; }
+
+/* бумага, скотч, картинка и текст ждут булавку и падают следом */
+.why-paper, .why-glue, .why-art, .why-text {
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out) calc(var(--d, 0ms) + 260ms);
+}
+
+.why-card.is-in .why-paper,
+.why-card.is-in .why-glue,
+.why-card.is-in .why-art,
+.why-card.is-in .why-text { opacity: 1; }
+
+@keyframes note-sway {
+  0%, 100% { rotate: 0deg; }
+  50%      { rotate: var(--sway, 0.5deg); }
+}
+
+.why-card img,
+.why-text { position: absolute; }
+
+.why-paper, .why-glue, .why-art { max-width: none; }
+
+.why-pin {
+  position: absolute;
+  width: 92px;
+  height: 138px;
+  z-index: 2;
+}
+
+.why-pin img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* у второй и третьей булавки картинка вписана внутрь бокса со сдвигом —
+   сдвиг у каждой свой, приходит из макета в --cx/--cy/--cs */
+.why-pin.is-cropped { overflow: hidden; }
+.why-pin.is-cropped img {
+  inset: auto;
+  left: var(--cx);
+  top: var(--cy);
+  width: var(--cs);
+  height: var(--cs);
+  object-fit: contain;
+}
+
+.why-art { z-index: 1; }
+.why-glue { z-index: 1; mix-blend-mode: overlay; }
+
+.why-text {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.why-text h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.05;
+  letter-spacing: -1.12px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.no-dewi .why-text h3 { letter-spacing: -1.32px; }
+
+.why-text p {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: rgba(13, 1, 40, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-card { opacity: 1; translate: none; rotate: 0deg; transition: none; }
+  .why-card.is-in { animation: none; }
+  .why-pin, .why-paper, .why-glue, .why-art, .why-text { opacity: 1; translate: none; scale: 1; transition: none; }
+  .why-plate { scale: 1; }
+}
+
+/* =============================================================================
+   Секция «Получайте процент с покупок» (1002:3607, 1440×628)
+   ========================================================================== */
+
+/* В макете секция стоит на y=3404, предыдущая заканчивается на 3248 */
+.percent {
+  position: relative;
+  width: 100%;
+  height: 628px;
+  margin-top: 156px; /* макет: 3404 против 3248 у конца предыдущей секции */
+  background: var(--surface);
+  /* без overflow: hidden — облака вылезают за верхний край секции */
+}
+
+.percent-clouds {
+  position: absolute;
+  left: calc(50% - 622px); /* макет: x=98 при ширине 1440 */
+  top: -87px;
+  width: 1203.117px;
+  height: 221.001px;
+  max-width: none;
+  pointer-events: none;
+  animation: cloud-drift-a 71s ease-in-out infinite;
+}
+
+.percent-title {
+  position: absolute;
+  left: 50%;
+  top: 59px;
+  transform: translate(-50%, -50%);
+  width: 562px;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: -2.24px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* компенсация метрик подменного шрифта — как у остальных заголовков */
+.no-dewi .percent-title { letter-spacing: -2.63px; transform: translate(-50%, -50%) scaleY(1.25); }
+
+/* Строки заходят по очереди: вторая с задержкой из --d. Двигаем translate, а
+   не transform, — transform у заголовка занят центрированием. */
+.percent-title-line {
+  display: block;
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.6s var(--ease-out) var(--d, 0ms),
+    translate 0.8s var(--ease-out) var(--d, 0ms);
+}
+
+.percent-title.is-in .percent-title-line { opacity: 1; translate: none; }
+
+/* --- карточки --- */
+
+/* Группа 1084×326 из макета стоит ровно по центру полотна (178 + 1084 + 178).
+   Внутри — простой ряд: три карточки по 24px, отбитый сверху на 18.74px. */
+.percent-cards {
+  position: absolute;
+  left: 50%;
+  top: 174px;
+  margin-left: -542px;
+  width: 1084px;
+  height: 326px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding-top: 18.74px;
+}
+
+.percent-card {
+  position: relative;
+  flex: none;
+  width: 334px;
+  height: 298px;
+  border-radius: 20px;
+  background: #fff;
+  opacity: 0;
+  translate: 0 -12px;
+  scale: 0.965;
+  transition:
+    opacity 0.5s var(--ease-out) var(--d, 0ms),
+    /* перелёт вниз и возврат: карточка «дотягивается» до места, а не
+       подъезжает к нему линейно */
+    translate 0.86s cubic-bezier(0.34, 1.32, 0.5, 1) var(--d, 0ms),
+    scale 0.86s cubic-bezier(0.34, 1.32, 0.5, 1) var(--d, 0ms);
+}
+
+.percent-card.is-in { opacity: 1; translate: none; scale: 1; }
+
+.percent-art { position: absolute; }
+
+.percent-art img { position: absolute; max-width: none; }
+
+.percent-art-rot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  translate: -50% -50%;
+}
+
+.percent-text {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.percent-text h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.05;
+  letter-spacing: -1.12px;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* у второй карточки заголовок задан шириной — перенос там разрешён */
+.percent-text h3[style*="width"] { white-space: normal; }
+
+.no-dewi .percent-text h3 { letter-spacing: -1.32px; }
+
+.percent-text p {
+  margin: 0;
+  width: 290px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.14px;
+  color: rgba(13, 1, 40, 0.72);
+}
+
+/* --- кнопка --- */
+
+.percent-more {
+  position: absolute;
+  left: 50%;
+  top: 572px;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 16px 24px 15px;
+  border-radius: 49px;
+  background: var(--accent);
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.55s var(--ease-out) var(--d, 0ms),
+    background-color 0.3s var(--ease);
+}
+
+.percent-more.is-in { opacity: 1; }
+.percent-more:hover { background: var(--accent-hi); }
+.percent-more:active { background: var(--accent-lo); }
+
+.percent-more-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: normal;
+  letter-spacing: -0.14px;
+  text-transform: uppercase;
+  color: #f7f7f7;
+  white-space: nowrap;
+}
+
+/* та же пробегающая полоса, что у кнопки оплаты */
+.percent-more-wave {
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -240px;
+  width: 200px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.055) 26%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.055) 74%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  filter: blur(18px);
+  animation: percent-btn-sweep 8.5s ease-in-out infinite;
+}
+
+@keyframes percent-btn-sweep {
+  0%, 6%    { transform: translateX(0); }
+  60%, 100% { transform: translateX(480px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .percent-title-line { opacity: 1; translate: none; transition: none; }
+  .percent-card { opacity: 1; translate: none; scale: 1; transition: none; }
+  .percent-more { opacity: 1; transition: none; }
+  .percent-more-wave, .percent-clouds { animation: none; }
+}
+
+/* =============================================================================
+   Секция FAQ (1002:3689, 1440×587)
+   ========================================================================== */
+
+/* В макете секция стоит на y=4188, предыдущая заканчивается на 4032 */
+.faq {
+  position: relative;
+  width: 100%;
+  margin-top: 156px;
+  background: var(--surface);
+}
+
+/* Облачное поле из макета сильно выходит за секцию вверх; снизу его обрезаем,
+   иначе страница вытянулась бы на лишнюю тысячу пикселей пустоты. */
+/* Облачное поле вылетает за секцию вниз, а следующий за ним футер
+   непрозрачен (иначе сквозь него просвечивал бы низ этой коробки). Значит
+   упереться облакам есть во что, и любая кромка режет их ровной линией.
+   Поэтому они не обрезаются, а растворяются: затухание кончается за 98px до
+   верха футера, и резать уже нечего. */
+.faq-clouds {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -192px;
+  bottom: -140px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 88%);
+}
+
+.faq-clouds img {
+  position: absolute;
+  left: calc(50% - 766px); /* макет: x=-46 при ширине 1440 */
+  top: 0;
+  width: 1589.72px;
+  height: 1017.6px;
+  max-width: none;
+  animation: cloud-drift-a 78s ease-in-out infinite;
+}
+
+.faq-title {
+  position: relative;
+  height: 59px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: -2.24px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.no-dewi .faq-title { letter-spacing: -2.63px; }
+
+.faq-list {
+  position: relative;
+  width: 600px;
+  margin: 56px auto 0; /* макет: колонка на y=115 при заголовке 0..59 */
+}
+
+/* Разделитель нулевой высоты, как вектор в макете: сидит ровно на стыке и
+   не сдвигает соседей. У последнего вопроса его нет. */
+.faq-item {
+  position: relative;
+  padding-bottom: 28px;
+}
+
+.faq-item + .faq-item { margin-top: 28px; }
+
+.faq-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.75px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: rgba(13, 1, 40, 0.06);
+}
+
+.faq-item:last-child::after { display: none; }
+
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  height: 24px;
+  text-align: left;
+}
+
+.faq-q-text {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: -0.36px;
+  color: var(--ink);
+  transition: opacity 0.2s var(--ease);
+}
+
+.faq-q:hover .faq-q-text { opacity: 0.64; }
+
+.faq-chev {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  transition: rotate 0.42s var(--ease-out), opacity 0.2s var(--ease);
+}
+
+.faq-q:hover .faq-chev { opacity: 0.64; }
+.faq-item.is-open .faq-chev { rotate: 180deg; }
+
+.faq-chev img { width: 100%; height: 100%; }
+
+/* Высоту ответа считает раскладка: 0fr → 1fr вместо max-height наугад. */
+.faq-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s var(--ease-out);
+}
+
+.faq-item.is-open .faq-a { grid-template-rows: 1fr; }
+
+.faq-a-in {
+  overflow: hidden;
+  /* закрытый ответ убираем и из потока фокуса, и из дерева доступности —
+     задержка равна длительности раскрытия, чтобы не мигало на закрытии */
+  visibility: hidden;
+  transition: visibility 0s 0.42s;
+}
+
+.faq-item.is-open .faq-a-in { visibility: visible; transition-delay: 0s; }
+
+/* Резерв под самый длинный ответ висит на абзаце, а не на слоте: слот — это
+   грид-элемент с overflow: hidden, и min-height на нём не дал бы строке
+   схлопнуться в 0fr. Стоит у всех ответов, поэтому раскрытие и закрытие
+   любого пункта идёт на одну и ту же высоту — без скачка. */
+.faq-a p {
+  margin: 0;
+  padding-top: 16px;
+  min-height: var(--faq-answer, 0px);
+  width: 480px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.14px;
+  color: rgba(13, 1, 40, 0.64);
+  opacity: 0;
+  translate: 0 -6px;
+  transition: opacity 0.28s var(--ease), translate 0.28s var(--ease);
+}
+
+.faq-item.is-open .faq-a p {
+  opacity: 1;
+  translate: none;
+  transition-delay: 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-clouds img { animation: none; }
+  .faq-a, .faq-chev, .faq-a p { transition: none; }
+}
+
+/* -----------------------------------------------------------------------------
+   Версия v1: первая редакция блока (1002:3607) — карточки под углом, «дырки»
+   в углах и лямки между ними. Правила живут рядом с нынешними и включаются
+   классом секции; в сборку v2 этот код не попадает вместе с компонентом.
+   -------------------------------------------------------------------------- */
+
+/* В первой редакции карточки стоят по координатам, а не рядом. */
+.percent.is-strapped .percent-cards {
+  display: block;
+  padding-top: 0;
+}
+
+/* Внешняя рамка держит место из макета, поворот живёт на вложенной карточке —
+   иначе он дрался бы с анимацией появления. */
+.percent.is-strapped .percent-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.percent.is-strapped .percent-card-in {
+  position: relative;
+  width: 334px;
+  height: 298px;
+  border-radius: 20px;
+  background: #fff;
+}
+
+/* «дырки» в углах — к ним крепятся концы лямок */
+.percent-dot {
+  position: absolute;
+  width: 18.642px;
+  height: 18.642px;
+}
+
+/* Коробка физлайна 1002:3652 с раздутыми полями: 469.711×38.109 плюс
+   отрицательные inset'ы, ровно 473×42.109. Концы кривых садятся в дырки
+   карточек, поэтому лежат поверх них. */
+.percent-straps {
+  position: absolute;
+  left: 305.12px;
+  top: 26.48px;
+  width: 473px;
+  height: 42.1088px;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* pathLength=1 в разметке: доля прорисовки не зависит от того, как сильно
+   лямку сейчас изогнуло пружиной. */
+.percent-straps path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* =============================================================================
+   Футер (1100:3041, 1440×637)
+   ========================================================================== */
+
+/* В макете футер стоит на y=4903, FAQ заканчивается на 4775 */
+.footer {
+  position: relative;
+  width: 100%;
+  height: 637px;
+  margin-top: 128px;
+  overflow: hidden;
+  /* Непрозрачная подложка обязательна: верх градиента футера прозрачен, и
+     сквозь него просвечивал нижний срез облачной коробки FAQ. */
+  background: var(--surface);
+  color: #fff;
+}
+
+/* Статичный дубль фона: виден на телефонах и без WebGL, канвас ложится
+   поверх. Радиальный купол здесь внизу — фон футера это фон первого экрана
+   вверх ногами. */
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Плотность подобрана под шейдер с intensity 2.6, чтобы телефон и десктоп
+     читались одинаково. */
+  background:
+    radial-gradient(140% 92% at 50% 116%,
+      rgb(0, 132, 214) 0%,
+      rgba(3, 158, 233, 0.86) 38%,
+      rgba(20, 180, 246, 0.4) 66%,
+      rgba(242, 244, 245, 0) 100%),
+    linear-gradient(0deg, rgba(3, 158, 233, 0.72) 0%, rgba(242, 244, 245, 0) 72%);
+}
+
+/* Высота 816 и вылет 12px вниз — из макета (маска 1100:3043 нарисована
+   именно такой). Растяни канвас по секции (637) — и спад градиента вышел бы
+   сжатым: геометрия слоя в шейдере считается от верха холста. */
+.footer-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -12px;
+  width: 100%;
+  height: 816px;
+  display: block;
+  z-index: 1;
+  /* тот же слой, что на первом экране, поставленный вверх ногами */
+  transform: scaleY(-1);
+}
+
+/* Полотно 1440 тут не нужно. Логотип, текст и «powered by» в макете стоят
+   по центру кадра (отклонение ±1px), а Legal и соцсети — в 32px от его левого
+   и правого края (1119:2507: соцсети переехали на x=1229, то есть 1408 справа).
+   Поэтому центральные элементы держим на 50%, боковые липнут к краям окна —
+   ровно как шапка с её padding: 0 32px. Заодно исчезает полотно фиксированной
+   ширины, которое приходилось центрировать вручную. */
+.footer-in {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.footer-logo {
+  position: absolute;
+  left: calc(50% + 1px);
+  top: 54px;
+  width: 132px;
+  height: 132px;
+  translate: -50% 0;
+  opacity: 0;
+  scale: 0.88;
+  transition: opacity 0.7s var(--ease-out), scale 0.9s var(--ease-out);
+}
+
+.footer-logo.is-in { opacity: 1; scale: 1; }
+
+.footer-lead {
+  position: absolute;
+  left: 50%;
+  top: 186px;
+  width: 595.586px;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Заливка текста градиентом: белый у нижней строки, прозрачный к верхней. */
+.footer-lead-text {
+  margin: 0;
+  height: 136px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -1.28px;
+  background: linear-gradient(0deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 0.8s var(--ease-out), translate 0.9s var(--ease-out);
+}
+
+.no-dewi .footer-lead-text { letter-spacing: -1.5px; }
+
+.footer-lead-text.is-in { opacity: 1; translate: none; }
+
+.footer-lead-note {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-feature-settings: 'ss04' 1, 'ordn' 1, 'liga' 0;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out) 160ms;
+}
+
+.footer-lead-note.is-in { opacity: 1; }
+
+/* --- колонки внизу --- */
+
+.footer-legal, .footer-social {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 32px от края сайта с обеих сторон — как в макете 1119:2507 */
+.footer-legal { left: 32px; bottom: 32px; }
+.footer-social { right: 32px; bottom: 34px; }
+
+.footer-legal h2, .footer-social h2 {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.12px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.56);
+  white-space: nowrap;
+}
+
+/* Метрики стоят на списке, а не только на ссылке: высоту строки задаёт
+   распорка самого li, и с унаследованными 16px строки выходили по 20.5px
+   вместо 18 — колонка вырастала на 12px против макета. */
+.footer-legal ul, .footer-social ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.footer-legal a, .footer-social a {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.12px;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  transition: color 0.24s var(--ease);
+}
+
+.footer-legal a:hover, .footer-social a:hover { color: #fff; }
+
+/* стрелка «наружу» стоит в начале строки, а не по центру — как в макете */
+.footer-social a {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.footer-social a img {
+  width: 6px;
+  height: 6px;
+  margin-top: 5px;
+  transition: translate 0.24s var(--ease);
+}
+
+.footer-social a:hover img { translate: 1px -1px; }
+
+/* --- powered by --- */
+
+.footer-by {
+  position: absolute;
+  left: calc(50% + 0.5px);
+  bottom: 34px;
+  width: 281px;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-by p {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.12px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  font-feature-settings: 'ss04' 1, 'ordn' 1, 'liga' 0;
+}
+
+.footer-by-row { display: flex; align-items: center; gap: 8px; }
+.footer-by-row img { width: 65px; height: 29px; }
+.footer-by-copy { text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-logo, .footer-lead-text, .footer-lead-note {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+    transition: none;
+  }
+}
+
+/* =============================================================================
+   Адаптив
+   -----------------------------------------------------------------------------
+   Десктоп не трогаем: всё ниже — только внутри медиазапросов. Границы обязаны
+   совпадать с src/viewport.ts (DESKTOP_MIN 1200, MOBILE_MAX 719), иначе JS
+   отдаст поточную разметку, а CSS отрисует её координатами из макета.
+
+   Шире 1200 работает прежняя схема: 1:1 от 1440 и пропорциональный zoom на
+   1200–1440. Ниже 1200 zoom выключается (см. App.tsx) и вступает перевёрстка.
+   ========================================================================== */
+
+@media (max-width: 1199px) {
+  /* Пока адаптированы не все секции, неадаптированные шире экрана. Страница
+     от этого не должна ездить вбок: overflow-x у body это не держит — нужен
+     и корневой элемент. clip вместо hidden, чтобы html не стал скроллером. */
+  html { overflow-x: clip; }
+
+  /* Полотно больше не 1440: секции, которые центрировались через
+     calc(50% - 720px + X), переезжают на обычные поля. */
+  .faq { margin-top: 96px; }
+
+  .faq-list {
+    width: auto;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 32px;
+  }
+
+  /* --- Футер --- */
+
+  /* Полотно 1440 с координатами уступает место обычной колонке. */
+  .footer { height: auto; margin-top: 96px; }
+
+  .footer-in {
+    height: auto;
+    padding: 64px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .footer-logo { position: static; translate: none; }
+
+  .footer-lead {
+    position: static;
+    translate: none;
+    width: 100%;
+    max-width: 596px;
+    gap: 24px;
+  }
+
+  .footer-lead-text { height: auto; }
+
+  /* Три нижние группы встают колонкой и центрируются. */
+  .footer-legal, .footer-social, .footer-by {
+    position: static;
+    translate: none;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-legal ul, .footer-social ul { align-items: center; }
+
+  /* Фон рисуется на всю высоту секции: 816px из макета тут уже не отмерить. */
+  .footer-bg { bottom: 0; height: 100%; }
+
+  /* --- Первый экран --- */
+
+  /* Высота 878 держала шапку, вкладки и карточку по координатам. Всё трое
+     переезжает в поток, высоту задаёт содержимое. */
+  .page { height: auto; padding: 0 24px 72px; }
+
+  .topbar {
+    position: relative;
+    top: 0;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+
+  /* Навигация была абсолютным центром шапки — становится отдельной строкой
+     под логотипом и переносится, если пилюли не влезают. */
+  .nav {
+    position: static;
+    transform: none;
+    order: 3;
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Медальон торчал сквозь купол шейдерного фона; фона на узких экранах нет,
+     и подложка под него превратилась бы в случайное пятно. */
+  .card-notch { display: none; }
+
+  /* Запасной градиент раньше показывался только при отсутствии WebGL и
+     обрывался ровной линией на своих 420px. На телефонах он теперь основной
+     фон, поэтому радиальный купол доводим до прозрачности к низу коробки. */
+  .no-webgl .page::before {
+    height: 460px;
+    background:
+      radial-gradient(135% 78% at 50% -12%,
+        rgba(20, 180, 246, 0.95) 0%,
+        rgba(20, 180, 246, 0.52) 52%,
+        rgba(242, 244, 245, 0) 100%),
+      /* Второй слой держит цвет в углах под шапкой: логотип — полупрозрачный
+         диск (opacity 0.4) и на светлом фоне просто пропадает. */
+      linear-gradient(180deg, rgba(20, 180, 246, 0.6) 0%, rgba(242, 244, 245, 0) 62%);
+  }
+
+  /* Подсказка стояла на координате из макета (голова шириной 406) — в узкой
+     карточке она этой ширины не находит и вылезает за край. */
+  .hint { left: auto; right: 0; }
+
+  /* Вкладки из вертикальной колонки слева становятся строкой над карточкой.
+     Четыре штуки по 112px в 390 не влезают — строка прокручивается. */
+  .tabs {
+    position: relative;
+    top: 0;
+    left: 0;
+    flex-direction: row;
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px auto 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; }
+
+  .card {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: 454px;
+    margin: 20px auto 0;
+  }
+
+  /* --- «Шаги»: ряды «картинка | пилюля | текст» становятся колонкой --- */
+
+  /* Высота 1494 держала три ряда по координатам — в колонке её задаёт
+     содержимое. Облака выключаем: их коробка нарисована под ту высоту и
+     на короткой секции повисает поперёк соседних блоков. */
+  .steps { height: auto; padding: 0 24px 96px; }
+  .steps-clouds { display: none; }
+
+  .steps-title {
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: 520px;
+    margin: 0 auto;
+    padding-top: 72px;
+  }
+  .no-dewi .steps-title { transform: scaleY(1.25); }
+
+  .steps-row {
+    position: static;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 520px;
+    margin: 72px auto 0;
+    text-align: center;
+  }
+
+  /* иллюстрация теряет рамку 236x213 из макета — картинка ставится в поток */
+  .steps-art { width: auto; height: auto; }
+  .steps-art img { position: static; width: auto; height: 190px; margin: 0 auto; }
+
+  .steps-text { text-align: center; }
+  .steps-text h3, .steps-text p { width: auto; }
+
+  /* --- «Почему»: записки с булавками становятся колонкой --- */
+
+  /* Плашка перестаёт быть холстом 1392x720 с координатами и превращается в
+     обычный контейнер. scale отключаем: --fit/--plate-scale считались от
+     ширины 1392 и здесь только мешают. Зазор 104px — под булавку, она
+     торчит над бумагой на 86px. */
+  .why { margin-top: 96px; margin-bottom: 0; }
+
+  .why-plate {
+    width: auto;
+    height: auto;
+    margin: 0 24px;
+    padding: 48px 20px 56px;
+    border-radius: 44px;
+    scale: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 104px;
+  }
+
+  .why-title {
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: 460px;
+    font-size: 40px;
+    letter-spacing: -1.6px;
+  }
+  .no-dewi .why-title { letter-spacing: -1.88px; transform: scaleY(1.25); }
+
+  /* Записка собирается заново: бумага и скотч — фон, булавка висит сверху,
+     картинка и текст идут потоком. Проценты бумаги те же, что в макете
+     задавали отрицательные inset'ы вокруг рамки 249.4x240. */
+  .why-card {
+    position: relative;
+    inset: auto;
+    width: 250px;
+    max-width: 100%;
+    padding: 34px 22px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    transform-origin: 50% 0;
+    transition-delay: var(--d, 0ms);
+  }
+
+  /* качание вокруг булавки держалось на координатах плашки — в колонке его нет */
+  .why-card, .why-card.is-in { animation: none; }
+
+  .why-paper {
+    left: -2.92%;
+    top: -1.52%;
+    width: 105.84%;
+    height: 106.07%;
+    z-index: 0;
+  }
+
+  .why-glue {
+    left: 0.68%;
+    top: 0.17%;
+    width: 99.56%;
+    height: auto;
+    z-index: 1;
+  }
+
+  .why-pin {
+    left: 50%;
+    top: -86px;
+    translate: -50% 0;
+    z-index: 3;
+  }
+
+  /* .why-card img задаёт absolute со специфичностью 0,1,1 — селектор картинки
+     должен быть не слабее, иначе она останется вне потока и ляжет на заголовок */
+  .why-card img.why-art {
+    position: static;
+    width: auto;
+    height: 64px;
+    z-index: 2;
+  }
+
+  .why-text { position: static; transform: none; z-index: 2; gap: 10px; }
+  .why-text h3 { width: auto; }
+  .why-text p { width: auto; }
+
+  /* --- «Проценты»: три карточки в ряд превращаются в колонку --- */
+
+  .percent { height: auto; padding: 0 32px 72px; }
+
+  .percent-title { position: static; transform: none; width: auto; padding-top: 56px; }
+  .no-dewi .percent-title { transform: scaleY(1.25); }
+
+  .percent-cards {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    width: auto;
+    height: auto;
+    margin: 56px 0 0;
+  }
+
+  .percent-card { max-width: 100%; }
+
+  /* width: fit-content — иначе флекс-контейнер в потоке растянулся бы во всю
+     колонку и кнопка «подробнее» стала бы шириной с экран */
+  /* v1: в колонке карточка — это внутренняя плашка, рамка координат не нужна */
+  .percent.is-strapped .percent-card { width: 334px; height: auto; }
+  .percent.is-strapped .percent-card-in { width: 100%; height: auto; }
+  /* наклон крайних карточек в колонке читается как брак вёрстки */
+  .percent.is-strapped .percent-card-in { rotate: none !important; }
+
+  .percent-more {
+    position: static;
+    translate: none;
+    width: fit-content;
+    margin: 48px auto 0;
+  }
+}
+
+@media (max-width: 719px) {
+  /* --- общий ритм --- */
+  .faq { margin-top: 72px; }
+  .faq-list { padding: 0 20px; }
+  .faq-title { height: auto; font-size: 40px; letter-spacing: -1.6px; }
+  .no-dewi .faq-title { letter-spacing: -1.88px; }
+
+  .faq-q { height: auto; min-height: 24px; gap: 16px; }
+  .faq-q-text { font-size: 16px; letter-spacing: -0.32px; }
+  /* ответ больше не 480px из макета — тянется по колонке */
+  .faq-a p { width: 100%; }
+
+  /* палец промахивается по строке 24px — растим зону нажатия, не двигая текст */
+  .faq-q::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    bottom: -10px;
+  }
+  .faq-item { padding-bottom: 24px; }
+  .faq-item + .faq-item { margin-top: 24px; }
+
+  /* --- Футер --- */
+  .footer { margin-top: 72px; }
+  .footer-in { padding: 48px 20px 32px; gap: 32px; }
+  .footer-logo { width: 104px; height: 104px; }
+  .footer-lead-text { font-size: 24px; letter-spacing: -0.96px; }
+  .no-dewi .footer-lead-text { letter-spacing: -1.13px; }
+
+  /* --- Первый экран --- */
+  .page { padding: 0 16px 56px; }
+  .card { padding: 56px 16px 32px; gap: 32px; }
+  .nav-pill { padding: 0 14px; }
+
+  /* --- «Шаги» --- */
+  .steps { padding: 0 20px 72px; }
+  .steps-title { padding-top: 56px; font-size: 40px; letter-spacing: -1.6px; }
+  .no-dewi .steps-title { letter-spacing: -1.88px; }
+  .steps-row { margin-top: 56px; gap: 16px; }
+  .steps-art img { height: 150px; }
+
+  /* --- «Почему» --- */
+  .why { margin-top: 72px; }
+  .why-plate { margin: 0 16px; padding: 40px 16px 48px; border-radius: 36px; gap: 100px; }
+  .why-title { font-size: 32px; letter-spacing: -1.28px; }
+  .no-dewi .why-title { letter-spacing: -1.5px; }
+
+  /* --- «Проценты» --- */
+  .percent { padding: 0 20px 56px; }
+  .percent-title { padding-top: 40px; font-size: 40px; letter-spacing: -1.6px; }
+  .no-dewi .percent-title { letter-spacing: -1.88px; }
+  .percent-cards { margin-top: 40px; gap: 24px; }
+
+  /* Карточка ужимается по ширине экрана, высоту отдаёт содержимому.
+     Иллюстрация остаётся на своих координатах из макета и свисает за верхний
+     край; самая высокая (молнии) кончается на 142px от верха — отступ сверху
+     берём с запасом, иначе картинка ложится на заголовок. */
+  .percent-card {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    padding: 158px 16px 28px;
+  }
+
+  /* текст перестаёт быть приклеенным к низу — он теперь в потоке */
+  .percent-text { position: static; translate: none; gap: 14px; }
+  .percent-text p { width: 100%; }
+  .percent-text h3 { white-space: normal; }
+  .percent-text h3[style] { width: auto !important; }
+
+  /* иллюстрация висела над карточкой по координатам — центрируем её */
+  .percent-art { left: 50% !important; translate: -50% 0; }
+
+  .percent.is-strapped .percent-card { width: 100%; max-width: 340px; padding: 0; }
+  .percent.is-strapped .percent-card-in { padding: 158px 16px 28px; }
+
+  .percent-more { margin-top: 40px; }
+}

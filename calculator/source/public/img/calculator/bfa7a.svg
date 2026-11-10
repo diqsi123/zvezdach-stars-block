@@ -1,0 +1,23 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1798" height="1332" viewBox="0 0 1798 1332" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect id="Sky Gradient" width="1798" height="1332" fill="url(#paint0_radial_0_131)"/>
+<defs>
+<radialGradient id="paint0_radial_0_131" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(829.464 590.271) rotate(90) scale(569.729 1460.61)">
+<stop stop-color="#D9D9D9"/>
+<stop offset="0.117896" stop-color="#D9D9D9" stop-opacity="0.991615"/>
+<stop offset="0.213837" stop-color="#D9D9D9" stop-opacity="0.967585"/>
+<stop offset="0.2912" stop-color="#D9D9D9" stop-opacity="0.9296"/>
+<stop offset="0.353363" stop-color="#D9D9D9" stop-opacity="0.879348"/>
+<stop offset="0.403704" stop-color="#D9D9D9" stop-opacity="0.818519"/>
+<stop offset="0.4456" stop-color="#D9D9D9" stop-opacity="0.7488"/>
+<stop offset="0.48243" stop-color="#D9D9D9" stop-opacity="0.671881"/>
+<stop offset="0.51757" stop-color="#D9D9D9" stop-opacity="0.589452"/>
+<stop offset="0.5544" stop-color="#D9D9D9" stop-opacity="0.5032"/>
+<stop offset="0.596296" stop-color="#D9D9D9" stop-opacity="0.414815"/>
+<stop offset="0.646637" stop-color="#D9D9D9" stop-opacity="0.325985"/>
+<stop offset="0.7088" stop-color="#D9D9D9" stop-opacity="0.2384"/>
+<stop offset="0.786163" stop-color="#D9D9D9" stop-opacity="0.153748"/>
+<stop offset="0.882104" stop-color="#D9D9D9" stop-opacity="0.0737185"/>
+<stop offset="1" stop-color="#D9D9D9" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

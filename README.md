@@ -1,5 +1,11 @@
 # Блоки Звездач
 
+## Калькулятор звёзд в рубли
+
+[Открыть калькулятор](https://zvezdach-stars-block.vercel.app/calculator/) · [Актуальная Figma](https://www.figma.com/design/lzicbzifnTOKF6C6VAdHS9/Zvezdach---Dev?node-id=1105-96112)
+
+Точная карточка из макета, ввод в обе стороны, курс 1,7 ₽, тонкие пробелы между разрядами, плавная прокрутка цифр и мягкая смена полей. Оригинальные шрифты и графика, плавный фон на исходных шейдерах Figma. Исходники: `calculator/source/`, статическая сборка: `calculator/site/`, проверка: `calculator/design-qa.md`. Кнопка передаёт расчёт в сохранённую исходную форму покупки.
+
 ## Способы оплаты и сценарии покупки
 
 [Открыть карусель](https://zvezdach-stars-block.vercel.app/payments.html) · [Макет Figma](https://www.figma.com/design/lzicbzifnTOKF6C6VAdHS9/Zvezdach---Dev?node-id=1105-74118)
@@ -79,3 +85,4 @@ npm run build
 Свет и движение сверены с [публичным референсом](https://bencho.dev/). Материал — металл с радиальной шлифовкой. Для сохранения отражений на сайте используется готовая JS-сцена: вид GLB в других приложениях зависит от их освещения. В золотом блоке яркость модели повышена согласно обработке изображения в Figma.
 
 Three.js и библиотека исправления длительности WebM распространяются по MIT; лицензии — в `node_modules/three/LICENSE` и `licenses/WebM-Duration-LICENSE.txt`. Результаты проверки публикации и адаптива — в `deployment-qa.md`.
+
