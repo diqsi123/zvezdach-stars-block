@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Звездач — металлический 3D-знак</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,Arial,sans-serif;background:#0a0a0a;color:#eee}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:flex;flex-direction:column}header{padding:26px 32px;display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.01em;color:#a3a3a3}header strong{color:#eee;font-weight:500}.preview{min-height:420px;flex:1;display:grid;place-items:center;padding:0 20px}.coin{width:min(608px,calc(100vw - 40px));aspect-ratio:152/132;flex-shrink:0}.coin.native{width:152px}.stage{width:100%;min-height:528px;display:grid;place-items:center;border-radius:24px}.light .stage{background:#f2f4f5}footer{padding:12px 24px 32px;display:flex;flex-direction:column;gap:20px;align-items:center}.buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}button,a.button{font:inherit;font-size:13px;border:1px solid #363636;background:#171717;color:#e8e8e8;min-height:40px;padding:0 16px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:background 160ms,transform 160ms}button:hover,a.button:hover{background:#252525}button:active,a.button:active{transform:scale(.97)}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #a5a5a5;outline-offset:4px}button:disabled{opacity:.5;cursor:progress}.primary{background:#eee;color:#111;border-color:#eee}.primary:hover{background:#fff}.progress{font-size:12px;color:#9e9e9e;min-height:17px;margin:0}.angle{display:flex;gap:14px;align-items:center;font-size:12px;color:#939393}input[type=range]{width:200px;accent-color:#bfbfbf}a{color:inherit}@media(max-width:500px){header{padding:20px}.stage{min-height:360px}footer{padding:0 20px 24px}.buttons{max-width:350px}.preview{min-height:360px}}
+  </style>
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+  <style>.coin{width:min(608px,calc(100vw - 40px),calc((100svh - 252px)*152/132))}.stage{min-height:0}@media(max-width:500px){.stage{min-height:320px}.coin{width:min(350px,calc(100vw - 40px))}}</style>
+</head>
+<body>
+  <header><strong>Звездач / 3D-знак</strong><button id="background" type="button">Светлый фон</button></header>
+  <main class="preview"><div class="stage"><div class="coin" id="coin"></div></div></main>
+  <footer>
+    <div class="angle"><label for="angle">Поворот</label><input id="angle" aria-label="Поворот знака" type="range" min="0" max="360" step="1" value="0"></div>
+    <div class="buttons">
+      <button id="pause" type="button">Пауза</button><button id="size" type="button">Оригинальный размер</button>
+      <button id="glb" class="primary" type="button">Скачать 3D</button><button id="png" type="button">PNG без фона</button><button id="video" type="button">Записать вращение</button>
+    </div>
+    <p class="progress" id="status" role="status" aria-live="polite">Загружаю знак…</p>
+  </footer>
+  <script type="module" src="./preview.js"></script>
+</body>
+</html>

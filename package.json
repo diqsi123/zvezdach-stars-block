@@ -1,0 +1,14 @@
+{
+  "name": "zvezdach-stars-block",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "@fix-webm-duration/fix": "1.0.1",
+    "three": "0.169.0"
+  }
+}

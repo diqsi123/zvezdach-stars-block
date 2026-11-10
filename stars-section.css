@@ -1,0 +1,22 @@
+@font-face{font-family:'RF Dewi Condensed';src:url('./assets/fonts/RFDewiCondensed-Black.otf') format('opentype');font-style:normal;font-weight:900;font-display:swap}
+@font-face{font-family:'Inter';src:url('./assets/fonts/Inter-Medium.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('./assets/fonts/JetBrainsMono-Bold.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
+:root{--surface-page:#f2f4f5;--text-on-brand:#f7f7f7;--text-on-dark:#fff;--stars-action:#e4af01;--radius-pill:999px;--stars-gold-gradient:linear-gradient(180deg, rgb(240.494689 240.494674 68.495535) -70.975524%, rgb(239.575731 235.653384 63.446146) -47.430824%, rgb(238.578087 230.397643 57.964472) -28.270798%, rgb(237.522838 224.838328 52.166200) -12.820883%, rgb(236.431004 219.086394 46.167006) -0.406505%, rgb(235.323668 213.252719 40.082571) 9.646875%, rgb(234.221879 207.448227 34.028580) 18.013855%, rgb(233.146673 201.783856 28.120716) 25.368985%, rgb(232.119117 196.370484 22.474654) 32.386829%, rgb(231.160262 191.319050 17.206079) 39.741959%, rgb(230.291172 186.740448 12.430671) 48.108939%, rgb(229.532870 182.745616 8.264113) 58.162343%, rgb(228.906451 179.445447 4.822086) 70.576709%, rgb(228.432920 176.950866 2.220270) 86.026624%, rgb(228.133374 175.372780 0.574348) 105.186650%, rgb(228.028850 174.822098 0.000000) 128.731349%);color-scheme:light}
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}body{font-family:'Inter',Arial,sans-serif;font-synthesis:none}
+.stars-section{position:relative;isolation:isolate;overflow:hidden;padding:48px 24px;min-height:766px;background:var(--surface-page)}
+.is-reference .stars-section{width:1440px}
+.stars-section__clouds{position:absolute;z-index:-1;left:0;top:83px;width:1203.117px;height:221.002px;max-width:none;pointer-events:none;user-select:none}
+.stars-card{position:relative;isolation:isolate;width:100%;height:670px;overflow:hidden;border-radius:63px;background-image:url('./assets/figma/gold-panel@2x.png');background-size:100% 100%;background-repeat:no-repeat;background-color:#e7bf11;display:flex;align-items:center;justify-content:center}
+.stars-card__content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px;width:506px;max-width:calc(100% - 48px);transform:translateY(-5px)}
+.stars-card__coin{position:relative;flex:none;width:140.485px;height:122px;filter:drop-shadow(0 16px 24px rgb(165 128 8 / .02))}
+.stars-card__coin canvas{position:relative;z-index:1;filter:brightness(1.52)}
+.stars-card__fallback{position:absolute;inset:0;width:140.485px;height:122px;object-fit:cover;pointer-events:none}.stars-card__fallback[hidden]{display:none}
+.stars-card__main{display:flex;flex-direction:column;align-items:center;gap:48px;width:100%}
+.stars-card__copy{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;text-align:center}
+.stars-card__title{margin:0;width:100%;font-family:'RF Dewi Condensed',sans-serif;font-size:56px;font-weight:900;line-height:58.8px;letter-spacing:-2.24px;text-transform:uppercase;color:var(--text-on-brand)}
+.stars-card__description{margin:0;width:416px;max-width:100%;font-family:'Inter',sans-serif;font-weight:500;font-size:16px;line-height:24px;letter-spacing:0;color:var(--text-on-dark)}
+.stars-card__button{display:inline-flex;flex:none;height:56px;align-items:center;justify-content:center;gap:8px;padding:0 24px;border:0;border-radius:var(--radius-pill);background:var(--text-on-brand);color:var(--stars-action);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;line-height:16px;letter-spacing:-.14px;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color 160ms,transform 160ms}
+.stars-card__button:hover{background:#fff}.stars-card__button:active{transform:scale(.98)}.stars-card__button:focus-visible{outline:2px solid #fff;outline-offset:5px}
+@media(max-width:640px){.stars-section{padding:24px 16px;min-height:0}.stars-card{min-height:min(670px,calc(100svh - 48px));height:auto;padding:clamp(40px,7.58svh,64px) 0;border-radius:40px}.stars-card__title{font-size:36px;line-height:37.8px;letter-spacing:-1.44px}.stars-card__description{width:100%}.stars-card__content{max-width:calc(100% - 40px)}}
+@media(max-width:360px){.stars-card__title{font-size:32px;line-height:33.6px;letter-spacing:-1.28px}}
+@media(prefers-reduced-motion:reduce){.stars-card__button{transition:none}}

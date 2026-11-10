@@ -1,0 +1,45 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@fix-webm-duration/fix':
+        specifier: 1.0.1
+        version: 1.0.1
+      three:
+        specifier: 0.169.0
+        version: 0.169.0
+
+packages:
+
+  '@fix-webm-duration/fix@1.0.1':
+    resolution: {integrity: sha512-rRN4CpWQaXRbCXYqKIxnsUq8OSWSGq/SVlnxxkx0HxMZZ1u0qnB24P766o8QS5YaMMqAOFAzmsMmfZ2OWucOLQ==}
+
+  '@fix-webm-duration/parser@1.0.1':
+    resolution: {integrity: sha512-Z6el7ohBBpym4iOmxDxumN715cHzLcAbtOtYfIbvoyToVtAuxvHt3ELXGff83iAXEU1Yj7g+obQBdiKJYVhbWw==}
+
+  three@0.169.0:
+    resolution: {integrity: sha512-Ed906MA3dR4TS5riErd4QBsRGPcx+HBDX2O5yYE5GqJeFQTPU+M56Va/f/Oph9X7uZo3W3o4l2ZhBZ6f6qUv0w==}
+
+  tslib@2.9.1:
+    resolution: {integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==}
+
+snapshots:
+
+  '@fix-webm-duration/fix@1.0.1':
+    dependencies:
+      '@fix-webm-duration/parser': 1.0.1
+      tslib: 2.9.1
+
+  '@fix-webm-duration/parser@1.0.1':
+    dependencies:
+      tslib: 2.9.1
+
+  three@0.169.0: {}
+
+  tslib@2.9.1: {}
